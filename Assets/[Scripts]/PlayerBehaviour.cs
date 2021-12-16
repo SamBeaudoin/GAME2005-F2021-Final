@@ -15,6 +15,7 @@ public class PlayerBehaviour : MonoBehaviour
     [Header("Movement")]
     public float speed;
     public bool isGrounded;
+    public bool noFire = false;
 
 
     public RigidBody3D body;
@@ -29,7 +30,10 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _Fire();
+        if(!noFire)
+        {
+          _Fire();
+        }
         _Move();
     }
 
@@ -67,7 +71,7 @@ public class PlayerBehaviour : MonoBehaviour
 
             if (Input.GetAxisRaw("Jump") > 0.0f)
             {
-                body.velocity = transform.up * speed * 0.1f * Time.deltaTime;
+                body.velocity += transform.up * speed * 0.1f * Time.deltaTime;
             }
 
             transform.position += body.velocity;
