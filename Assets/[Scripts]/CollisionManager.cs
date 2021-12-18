@@ -181,7 +181,9 @@ public class CollisionManager : MonoBehaviour
                 // add the new contact
                 a.contacts.Add(contactB);
                 a.isColliding = true;
-                
+
+                // Call Translation Function to move cubes
+                ApplyTranslation(a, contactB);
             }
         }
         else
@@ -199,5 +201,40 @@ public class CollisionManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public static void ApplyTranslation(CubeBehaviour a, Contact c)
+    {
+        // Find normal and penetration
+        Vector3 ContactVector = c.face;
+        float penetration = c.penetration;
+
+        // Find Translation Vector
+        Vector3 TranslationVectorA = -ContactVector * penetration;
+
+        // Minimum Translation cut-off
+        //if (Mathf.Abs(TranslationVectorA.y + TranslationVectorA.x + TranslationVectorA.z) < 0.01)
+        //{
+        //    return;
+        //}
+
+        // If on ground and collision is above
+        if(c.face == Vector3.up  && a.isGrounded)
+        {
+            return;
+        }
+
+        // Move Object
+        if(!(a.gameObject.GetComponent<RigidBody3D>().bodyType == BodyType.STATIC)) 
+        {
+            a.transform.Translate(TranslationVectorA);
+        }
+
+        // Remove from contact list
+        //a.contacts.Remove(a.contacts.Find(x => x.cube.gameObject.name.Equals(b.gameObject.name)));
+        //a.isColliding = false;
+
+        //b.contacts.Remove(b.contacts.Find(x => x.cube.gameObject.name.Equals(a.gameObject.name)));
+        //b.isColliding = false;
     }
 }
