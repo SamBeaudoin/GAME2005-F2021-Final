@@ -30,9 +30,10 @@ public class MouseLook : MonoBehaviour
 
     void Update()
     {
-        // Ensure the cursor is always locked when set
+        // If cursor is locked, do view change
         if (lockCursor)
         {
+            // Ensure the cursor is always locked when set
             Cursor.lockState = CursorLockMode.Locked;
         
 
